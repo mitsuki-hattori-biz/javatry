@@ -47,7 +47,7 @@ public class Step01VariableTest extends PlainTestCase {
         String piari = null;
         String dstore = "mai";
         sea = sea + land + piari + ":" + dstore;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => mystic8null:mai
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -56,7 +56,7 @@ public class Step01VariableTest extends PlainTestCase {
         String land = "oneman";
         sea = land;
         land = land + "'s dreams";
-        log(sea); // your answer? => 
+        log(sea); // your answer? => oneman
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -65,7 +65,7 @@ public class Step01VariableTest extends PlainTestCase {
         int land = 415;
         sea = land;
         land++;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 415
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -75,7 +75,11 @@ public class Step01VariableTest extends PlainTestCase {
         sea = land;
         sea = land.add(new BigDecimal(1));
         sea.add(new BigDecimal(1));
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 417
+        //答えは416 BigDecimal型の変数はImmutability（不可変）な型のためsea.add(new BigDecimal(1));で数字を増やすことはできない
+        //sea = sea.add(new BigDecimal(1));という計算式での代入であれば加算が可能
+        //floatやdoubleは二進数で表現されるため、小数点の生じる計算に誤差が生じることがある
+        //BigDecimalは、10進数で表現されるため、誤差が生じない
     }
 
     // ===================================================================================
@@ -89,19 +93,20 @@ public class Step01VariableTest extends PlainTestCase {
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_String() {
         String sea = instanceBroadway;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => null
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_int() {
         int sea = instanceDockside;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 0
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_Integer() {
         Integer sea = instanceHangar;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 0
+        //答えはnull Integer型の変数はnullを代入することができるため、初期値はnullとなる
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -110,13 +115,18 @@ public class Step01VariableTest extends PlainTestCase {
         instanceMagiclamp = "magician";
         helpInstanceVariableViaMethod(instanceMagiclamp);
         String sea = instanceBroadway + "|" + instanceDockside + "|" + instanceHangar + "|" + instanceMagiclamp;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => bbb|0|null|magician
+        //答えはbigband|1|null|magician　何もリターンしていないから関数の影響はないと思った
     }
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
         instanceBroadway = "bigband";
         ++instanceDockside;
         instanceMagiclamp = "burn";
+        //instanceBroadwayとinstanceDocksideはインスタンス変数なので、メソッド内で変更してもそのまま反映される
+        //instanceMagiclampはメソッド引数なので、メソッド内で変更しても呼び出し元には影響しない
+        //インスタンス変数としてのinstanceMagiclampと、引数としてのinstanceMagiclampが同じ名前であるという罠
+        //Javaの場合、スコープが狭い方が優先度が高い
     }
 
     // ===================================================================================
@@ -130,14 +140,30 @@ public class Step01VariableTest extends PlainTestCase {
         String sea = "harbor";
         int land = 415;
         helpMethodArgumentImmutableMethodcall(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor
+        //関数は何もリターンしていないし、それを受け取ってもいないから影響がない
     }
 
     private void helpMethodArgumentImmutableMethodcall(String sea, int land) {
         ++land;
         String landStr = String.valueOf(land); // is "416"
         sea.concat(landStr);
+        //sea.concat(landStr);を入れる変数も存在していない
     }
+    //関数に意味を持たせたい場合
+//    public void test_variable_method_argument_immutable_methodcall() {
+//        String sea = "harbor";
+//        int land = 415;
+//        sea = helpMethodArgumentImmutableMethodcall(sea, land);
+//        log(sea);
+//    }
+//
+//    private String helpMethodArgumentImmutableMethodcall(String sea, int land) {
+//        ++land;
+//        String landStr = String.valueOf(land); // is "416"
+//        String test = sea.concat(landStr);
+//        return test;
+//    }
 
     // -----------------------------------------------------
     //                                   Mutable Method-call
@@ -147,7 +173,10 @@ public class Step01VariableTest extends PlainTestCase {
         StringBuilder sea = new StringBuilder("harbor");
         int land = 415;
         helpMethodArgumentMethodcall(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor
+        //答えはharbor416
+        //StringBuilderはMutable（可変）のため、関数内で変更された内容が呼び出し元にも反映される
+        //C言語のポインタ変数みたいなものかな？
     }
 
     private void helpMethodArgumentMethodcall(StringBuilder sea, int land) {
@@ -163,13 +192,15 @@ public class Step01VariableTest extends PlainTestCase {
         StringBuilder sea = new StringBuilder("harbor");
         int land = 415;
         helpMethodArgumentVariable(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor
+        //helpMethodArgumentVariable内のseaがグレーアウトしてたから、わかっただけのまぐれ当たりです。
     }
 
     private void helpMethodArgumentVariable(StringBuilder sea, int land) {
         ++land;
         String seaStr = sea.toString(); // is "harbor"
         sea = new StringBuilder(seaStr).append(land);
+        //関数内でnewをしても呼び出しもとには影響しない
     }
 
     // ===================================================================================
@@ -191,8 +222,13 @@ public class Step01VariableTest extends PlainTestCase {
      * o すべての変数をlog()でカンマ区切りの文字列で表示
      * </pre>
      */
+
+    private int piari;
+
     public void test_variable_writing() {
-        // define variables here
+        String sea = "mystic";
+        Integer land = null;
+        log(sea + "," + land + "," + piari);
     }
 
     // ===================================================================================
@@ -204,11 +240,32 @@ public class Step01VariableTest extends PlainTestCase {
      * <pre>
      * _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
      * your question here (ここにあなたの質問を):
-     * 
+     * 各ログ（計７箇所）で出力される数字は何でしょうか？
      * _/_/_/_/_/_/_/_/_/_/
      * </pre>
      */
     public void test_variable_yourExercise() {
-        // write your code here
+        BigDecimal num1 = new BigDecimal("0");
+        num1.add(new BigDecimal("1"));
+        log("num1: " + num1); // your answer? =>
+        BigDecimal num2 = num1.add(new BigDecimal("1"));
+        log("num2: " + num2); // your answer? =>
+        BigDecimal num3 = num2.add(new BigDecimal("1"));
+        log("num3-1: " + num3); // your answer? =>
+        addNumberMethod(num3);
+        log("num3-2: "+ num3); // your answer? =>
+        BigDecimal num4 = addNumberReturnMethod(num3);
+        log("num4: " + num4); // your answer? =>
+    }
+
+    private void addNumberMethod(BigDecimal num) {
+        num = num.add(new BigDecimal("1"));
+        log("numMethod1: " + num); // your answer? =>
+    }
+
+    private BigDecimal addNumberReturnMethod(BigDecimal num) {
+        num = num.add(new BigDecimal("1"));
+        log("numMethod2: " + num); // your answer? =>
+        return num;
     }
 }
