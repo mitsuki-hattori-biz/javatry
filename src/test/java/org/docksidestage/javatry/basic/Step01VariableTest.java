@@ -48,15 +48,34 @@ public class Step01VariableTest extends PlainTestCase {
         String dstore = "mai";
         sea = sea + land + piari + ":" + dstore;
         log(sea); // your answer? => mystic8null:mai
+        // #1on1: プログラミング言語の決め (2026/07/28)
+        // エラーになる言語もあったり、空文字になったりする言語もある。
+        // "null" って文字列になるメリデメ:
+        // o デメリット: ないデータなのに "null" って文字になっちゃう by はっとりさん
+        // 画面やメールとかにnullって表示されやすい。体裁が悪い。言語を推測されやすい。by jflute
+        // o メリット: 空白とは別に扱える、数値の0とnullは違う by はっとりさん
+        // 開発時はnullって表示されて不具合がわかりやすい。
+        // 些細な違いでもメリデメを考える習慣が大事。思考トレーニング。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_basic() {
-        String sea = "mystic";
-        String land = "oneman";
-        sea = land;
-        land = land + "'s dreams";
+        String sea = "mystic"; // 1 (1丁目1番地)
+        String land = "oneman"; // 2 (2丁目2番地)
+        sea = land; // seaの1丁目1番地を消しゴム消して、2丁目2番地に書き直してる
+        land = land + "'s dreams"; // 3('s dreams), 4(oneman's dreams)
         log(sea); // your answer? => oneman
+        // #1on1: 変数とインスタンスの関係性 (2026/07/28)
+        // インスタンスとは？
+        // $ インスタンス変数とは聞いたことある by はっとりさん
+        // 一軒家の例。
+        // Stringインスタンスの例、value/hashというインスタンス変数。
+        // インスタンスにフォーカスを当てることの大切さ。
+        //
+        // 変数とは？
+        // オブジェクト型の場合。
+        // 変数とインスタンスは、1:1ではなく、n:1になりうる。
+        // スコープ違いで、n:1になること多い。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -66,6 +85,8 @@ public class Step01VariableTest extends PlainTestCase {
         sea = land;
         land++;
         log(sea); // your answer? => 415
+        // #1on1: プリミティヴ型 (2026/07/28)
+        // 変数に値そのものが入っているイメージ。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -80,6 +101,16 @@ public class Step01VariableTest extends PlainTestCase {
         //sea = sea.add(new BigDecimal(1));という計算式での代入であれば加算が可能
         //floatやdoubleは二進数で表現されるため、小数点の生じる計算に誤差が生じることがある
         //BigDecimalは、10進数で表現されるため、誤差が生じない
+        // #1on1: immutableとは？mutableとは？ (2026/07/28)
+        // o immutableなクラス(インスタンス) // default
+        // o immutableな変数
+        // BigDecimalはimmutableなクラスで、newするとimmutableなインスタンスができあがる
+        // BigDecimalのコードリーディングしてみました。構造だけフォーカス当てて読んでみる。
+        // immutableな変数は、finalがついた変数。JSだったらconst。
+        //
+        // 後半のエクササイズでimmutableとmutableの理解を深めた。
+        // 今日から、クラスを見かけたらimmutableなのかmutableなのか、気になってしょうがないはず。
+        // TODO jflute 次回1on1にて、immutable/mutableのメリデメ思考トレーニング (2026/07/28)
     }
 
     // ===================================================================================
@@ -127,6 +158,7 @@ public class Step01VariableTest extends PlainTestCase {
         //instanceMagiclampはメソッド引数なので、メソッド内で変更しても呼び出し元には影響しない
         //インスタンス変数としてのinstanceMagiclampと、引数としてのinstanceMagiclampが同じ名前であるという罠
         //Javaの場合、スコープが狭い方が優先度が高い
+        // TODO jflute 次回1on1にて、サクッとふぉろー (2026/07/28)
     }
 
     // ===================================================================================
@@ -142,6 +174,7 @@ public class Step01VariableTest extends PlainTestCase {
         helpMethodArgumentImmutableMethodcall(sea, land);
         log(sea); // your answer? => harbor
         //関数は何もリターンしていないし、それを受け取ってもいないから影響がない
+        // #1on1: Stringがimmutableだから、実はhelpを読まなくても答えが出ちゃう (2026/07/28)
     }
 
     private void helpMethodArgumentImmutableMethodcall(String sea, int land) {
@@ -149,21 +182,22 @@ public class Step01VariableTest extends PlainTestCase {
         String landStr = String.valueOf(land); // is "416"
         sea.concat(landStr);
         //sea.concat(landStr);を入れる変数も存在していない
+        // #1on1: concat()のソースコードも読んでみた (2026/07/28)
     }
     //関数に意味を持たせたい場合
-//    public void test_variable_method_argument_immutable_methodcall() {
-//        String sea = "harbor";
-//        int land = 415;
-//        sea = helpMethodArgumentImmutableMethodcall(sea, land);
-//        log(sea);
-//    }
-//
-//    private String helpMethodArgumentImmutableMethodcall(String sea, int land) {
-//        ++land;
-//        String landStr = String.valueOf(land); // is "416"
-//        String test = sea.concat(landStr);
-//        return test;
-//    }
+    //    public void test_variable_method_argument_immutable_methodcall() {
+    //        String sea = "harbor";
+    //        int land = 415;
+    //        sea = helpMethodArgumentImmutableMethodcall(sea, land);
+    //        log(sea);
+    //    }
+    //
+    //    private String helpMethodArgumentImmutableMethodcall(String sea, int land) {
+    //        ++land;
+    //        String landStr = String.valueOf(land); // is "416"
+    //        String test = sea.concat(landStr);
+    //        return test;
+    //    }
 
     // -----------------------------------------------------
     //                                   Mutable Method-call
@@ -201,6 +235,8 @@ public class Step01VariableTest extends PlainTestCase {
         String seaStr = sea.toString(); // is "harbor"
         sea = new StringBuilder(seaStr).append(land);
         //関数内でnewをしても呼び出しもとには影響しない
+        // #1on1: 関数内でnewしたものは、二軒目のインスタンスなので... (2026/07/28)
+        // 一軒目のインスタンスのメソッドは呼び出してない。
     }
 
     // ===================================================================================
@@ -253,7 +289,7 @@ public class Step01VariableTest extends PlainTestCase {
         BigDecimal num3 = num2.add(new BigDecimal("1"));
         log("num3-1: " + num3); // your answer? =>
         addNumberMethod(num3);
-        log("num3-2: "+ num3); // your answer? =>
+        log("num3-2: " + num3); // your answer? =>
         BigDecimal num4 = addNumberReturnMethod(num3);
         log("num4: " + num4); // your answer? =>
     }
