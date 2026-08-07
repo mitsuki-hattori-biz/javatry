@@ -52,7 +52,7 @@ public class Step02IfForTest extends PlainTestCase {
         } else {
             sea = 7;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 7
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -67,29 +67,30 @@ public class Step02IfForTest extends PlainTestCase {
         } else {
             sea = 9;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 7
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_if_elseif_nested() {
         boolean land = false;
         int sea = 904;
-        if (sea > 904) {
+        if (sea > 904) {//false
             sea = 2001;
             sea = sea++ * 2;
-        } else if (land && sea >= 904) {
+        } else if (land && sea >= 904) {//false
             sea = 7;
             sea = ++sea * 2;
-        } else if (sea >= 903 || land) {
-            if (sea % 2 == 0) {
-                sea = sea++ * 2;
+        } else if (sea >= 903 || land) {//true
+            if (sea % 2 == 0) {//true
+                sea = sea++ * 2;//sea=1808
+                //intellJの機能で++で変更されないことがわかりました。
             }
-            if (!land) {
+            if (!land) {//true
                 land = true;
             } else if (sea <= 903) {
                 sea++;
             }
-            if (sea < 1810) {
+            if (sea < 1810) {//true
                 sea = 8;
             }
         } else if (sea == 8) {
@@ -98,16 +99,17 @@ public class Step02IfForTest extends PlainTestCase {
         } else {
             sea = 9;
         }
-        if (sea >= 9 || (sea > 7 && sea < 9)) {
-            sea--;
+        //land = true, sea=8
+        if (sea >= 9 || (sea > 7 && sea < 9)) {//true
+            sea--;//7
             if (sea % 2 == 1) {
-                sea++;
+                sea++;//8
             }
         }
-        if (land) {
+        if (land) {//true
             sea = 10;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 10
     }
 
     // ===================================================================================
@@ -123,7 +125,7 @@ public class Step02IfForTest extends PlainTestCase {
                 sea = stage;
             }
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => dockside
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -133,7 +135,7 @@ public class Step02IfForTest extends PlainTestCase {
         for (String stage : stageList) {
             sea = stage;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => magiclamp
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -144,12 +146,13 @@ public class Step02IfForTest extends PlainTestCase {
             if (stage.startsWith("br")) {
                 continue;
             }
+            //今回はこのif文なくても結果同じ、brから始まって、gaを含む文字列が先にあれば結果が変わる
             sea = stage;
             if (stage.contains("ga")) {
                 break;
             }
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => hangar
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -165,7 +168,7 @@ public class Step02IfForTest extends PlainTestCase {
             }
         });
         String sea = sb.toString();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => dockside
     }
 
     // ===================================================================================
@@ -177,6 +180,16 @@ public class Step02IfForTest extends PlainTestCase {
      */
     public void test_iffor_making() {
         // write if-for here
+        List<String> stageList = prepareStageList();
+        List<String> sb = new ArrayList<>();
+        stageList.forEach(stage -> {
+            if (stage.contains("a")) {
+                sb.add(stage);
+            }
+        });
+        sb.forEach(sea -> {
+            log(sea);
+        });
     }
 
     // ===================================================================================
@@ -186,19 +199,38 @@ public class Step02IfForTest extends PlainTestCase {
      * Change foreach statement to List's forEach() (keep result after fix) <br>
      * (foreach文をforEach()メソッドへの置き換えてみましょう (修正前と修正後で実行結果が同じになるように))
      */
+//    public void test_iffor_refactor_foreach_to_forEach() {
+//        List<String> stageList = prepareStageList();
+//        String sea = null;
+//        for (String stage : stageList) {
+//            if (stage.startsWith("br")) {
+//                continue;
+//            }
+//            sea = stage;
+//            if (stage.contains("ga")) {
+//                break;
+//            }
+//        }
+//        log(sea); // should be same as before-fix
+//    }//元
+
     public void test_iffor_refactor_foreach_to_forEach() {
         List<String> stageList = prepareStageList();
-        String sea = null;
-        for (String stage : stageList) {
-            if (stage.startsWith("br")) {
-                continue;
+        String[] sea = new String[1];
+        final boolean[] flag = {true};
+        stageList.forEach(stage -> {
+            if(!flag[0]){
+                return;
             }
-            sea = stage;
-            if (stage.contains("ga")) {
-                break;
+            sea[0] = stage;
+            if (sea[0].contains("ga")) {
+                flag[0] = false;
             }
-        }
-        log(sea); // should be same as before-fix
+        });
+        log(sea[0]); // should be same as before-fix
+        //ラムダ式の中はfinalか実質finalでないといけないとエラー文から知りました。
+        //AIに聞けば配列にすればいいということなので、変数を配列にしました。
+        //あとforeachにbreakはないということなので、flagを作って、gaを含んだらfalseにして、その後の処理をしないようにしました。
     }
 
     /**
@@ -213,6 +245,32 @@ public class Step02IfForTest extends PlainTestCase {
      */
     public void test_iffor_yourExercise() {
         // write your code here
+        List<String> stageList = ExerciseList();
+        StringBuilder sea = new StringBuilder();
+        int length = 4;
+        for (String stage : stageList) {
+            if (stage.length() > length) {
+                sea.append("|");
+                length++;
+            }
+            else if(stage.length() == length)
+                sea.append(stage);
+            else{
+                sea.append("/");
+                length--;
+            }
+        }
+        String sb = sea.toString();
+        log(sb); // answer? => |fluit|orange
+    }
+
+    private List<String> ExerciseList() {
+        List<String> stageList = new ArrayList<>();
+        stageList.add("apple");
+        stageList.add("fluit");
+        stageList.add("grapes");
+        stageList.add("orange");
+        return stageList;
     }
 
     // ===================================================================================
