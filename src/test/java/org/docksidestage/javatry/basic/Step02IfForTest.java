@@ -199,27 +199,34 @@ public class Step02IfForTest extends PlainTestCase {
      * Change foreach statement to List's forEach() (keep result after fix) <br>
      * (foreach文をforEach()メソッドへの置き換えてみましょう (修正前と修正後で実行結果が同じになるように))
      */
-//    public void test_iffor_refactor_foreach_to_forEach() {
-//        List<String> stageList = prepareStageList();
-//        String sea = null;
-//        for (String stage : stageList) {
-//            if (stage.startsWith("br")) {
-//                continue;
-//            }
-//            sea = stage;
-//            if (stage.contains("ga")) {
-//                break;
-//            }
-//        }
-//        log(sea); // should be same as before-fix
-//    }//元
+    //    public void test_iffor_refactor_foreach_to_forEach() {
+    //        List<String> stageList = prepareStageList();
+    //        String sea = null;
+    //        for (String stage : stageList) {
+    //            if (stage.startsWith("br")) {
+    //                continue;
+    //            }
+    //            sea = stage;
+    //            if (stage.contains("ga")) {
+    //                break;
+    //            }
+    //        }
+    //        log(sea); // should be same as before-fix
+    //    }//元
 
     public void test_iffor_refactor_foreach_to_forEach() {
         List<String> stageList = prepareStageList();
         String[] sea = new String[1];
-        final boolean[] flag = {true};
+        // TODO hattori flagという変数名だと読み手にとっての情報量が少ないので... by jflute (2026/08/09)
+        // (flagであることはboolean型を見ればわかるし)
+        // 具体的に何を入れているのか？true/falseは何を示すのか？を変数名にしてみましょう。
+        // TODO hattori 一方で、フラグは、できれば false から true にしたいところですね。 by jflute (2026/08/09)
+        // フラグってflag, 旗なので、下げている状態(false)から何かが起きたら上がる(true)というニュアンスなので...
+        // 必ずしも意味的に難しいときもありますが、可能ならデフォルトがfalseで何かがおきたらtrueになる方が直感的かなと。
+        // (もしくは、"その後の処理をしないように" って否定ニュアンスを表現するために、false にしたんですかね？)
+        final boolean[] flag = { true };
         stageList.forEach(stage -> {
-            if(!flag[0]){
+            if (!flag[0]) {
                 return;
             }
             sea[0] = stage;
@@ -231,6 +238,9 @@ public class Step02IfForTest extends PlainTestCase {
         //ラムダ式の中はfinalか実質finalでないといけないとエラー文から知りました。
         //AIに聞けば配列にすればいいということなので、変数を配列にしました。
         //あとforeachにbreakはないということなので、flagを作って、gaを含んだらfalseにして、その後の処理をしないようにしました。
+
+        // TODO jflute 次回1on1にて、forEach()メソッドの特徴をじっくり (2026/08/09)
+        // なぜfinalでないといけないのか？なぜbreakがないのか？
     }
 
     /**
@@ -252,18 +262,21 @@ public class Step02IfForTest extends PlainTestCase {
             if (stage.length() > length) {
                 sea.append("|");
                 length++;
-            }
-            else if(stage.length() == length)
+            } else if (stage.length() == length)
                 sea.append(stage);
-            else{
+            else {
                 sea.append("/");
                 length--;
             }
         }
         String sb = sea.toString();
         log(sb); // answer? => |fluit|orange
+
+        // TODO hattori [いいね] elseの括弧がなくて絶妙に読みづらくて良いエクササイズ笑 by jflute (2026/08/09)
+        // 自分も追ってみました。これはなかなか難易度高くて良い（＾＾。
     }
 
+    // TODO hattori 一応、Javaだとメソッドの先頭は小文字が慣習となります。 by jflute (2026/08/09)
     private List<String> ExerciseList() {
         List<String> stageList = new ArrayList<>();
         stageList.add("apple");
