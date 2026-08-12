@@ -110,6 +110,11 @@ public class Step02IfForTest extends PlainTestCase {
             sea = 10;
         }
         log(sea); // your answer? => 10
+
+        // #1on1: インクリメントのいたずら (2026/08/12)
+        // インクリメントは単独行で書くのが無難。
+
+        // TODO jflute よもやま話: 1on1にて、漠然読みの話 (2026/08/12)
     }
 
     // ===================================================================================
@@ -239,8 +244,27 @@ public class Step02IfForTest extends PlainTestCase {
         //AIに聞けば配列にすればいいということなので、変数を配列にしました。
         //あとforeachにbreakはないということなので、flagを作って、gaを含んだらfalseにして、その後の処理をしないようにしました。
 
-        // TODO jflute 次回1on1にて、forEach()メソッドの特徴をじっくり (2026/08/09)
+        // done jflute 次回1on1にて、forEach()メソッドの特徴をじっくり (2026/08/09)
         // なぜfinalでないといけないのか？なぜbreakがないのか？
+
+        // #1on1: Javaのforループ (2026/08/12)
+        // o intあいのfor文 (伝統的なfor)      // Java当初から, Javaの文法
+        // o 拡張for文 (foreach文/普通のfor文) // 10年後くらい, Javaの文法
+        // o forEach()メソッド                // 20年後くらい, 単なるメソッド
+        //
+        // 単なるメソッドで、たまたまforEach()メソッドの中でfor文から呼ばれているだけ、
+        // なので、forの中で呼ばれているかどうかの確証はないから、forの文法は使えない。
+        // continue, breakも使えない。
+        //
+        // forEach()メソッドのメリット:
+        // o $ 制限が掛かるからこその、安全性/可読性が上がる by はっとりさん
+        // o いかに上手に制限を掛けられるか？絶妙なバランスを考えるのがぼくらのお仕事。
+        // 
+        // forEach()メソッドのデメリット:
+        // o 本当にmutableなことやりたいとき
+        //  → 適材適所って判断コスト
+        //
+        // 言語/フレームワークの機能デザインのコンセプトにもつながる。
     }
 
     /**
@@ -272,7 +296,7 @@ public class Step02IfForTest extends PlainTestCase {
         String sb = sea.toString();
         log(sb); // answer? => |fluit|orange
 
-        // TODO hattori [いいね] elseの括弧がなくて絶妙に読みづらくて良いエクササイズ笑 by jflute (2026/08/09)
+        // done hattori [いいね] elseの括弧がなくて絶妙に読みづらくて良いエクササイズ笑 by jflute (2026/08/09)
         // 自分も追ってみました。これはなかなか難易度高くて良い（＾＾。
     }
 
