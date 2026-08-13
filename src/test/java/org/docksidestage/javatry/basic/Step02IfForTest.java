@@ -229,6 +229,8 @@ public class Step02IfForTest extends PlainTestCase {
         // フラグってflag, 旗なので、下げている状態(false)から何かが起きたら上がる(true)というニュアンスなので...
         // 必ずしも意味的に難しいときもありますが、可能ならデフォルトがfalseで何かがおきたらtrueになる方が直感的かなと。
         // (もしくは、"その後の処理をしないように" って否定ニュアンスを表現するために、false にしたんですかね？)
+        // TODO hattori 昔、アンケートの回答者を表示しない機能を作るときに、
+        //  「アンケートの回答者を表示しない」フラグを作ろうとしたけど「匿名回答機能が有効」のフラグに変えたことを思い出しました by fujisawa (2026/08/13)
         final boolean[] flag = { true };
         stageList.forEach(stage -> {
             if (!flag[0]) {
@@ -301,6 +303,7 @@ public class Step02IfForTest extends PlainTestCase {
     }
 
     // TODO hattori 一応、Javaだとメソッドの先頭は小文字が慣習となります。 by jflute (2026/08/09)
+    // TODO hattori 命名規則、慣れるまでは大変ですよね。「プログラム 命名規則 キャメル」とかで調べると、色々な命名規則見られておもしろい by fujisawa (2026/08/13)
     private List<String> ExerciseList() {
         List<String> stageList = new ArrayList<>();
         stageList.add("apple");

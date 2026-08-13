@@ -254,6 +254,7 @@ public class Step01VariableTest extends PlainTestCase {
         helpMethodArgumentVariable(sea, land);
         log(sea); // your answer? => harbor
         //helpMethodArgumentVariable内のseaがグレーアウトしてたから、わかっただけのまぐれ当たりです。
+        // TODO hattori IDEの情報で判断するのも重要なことです by fujisawa (2026/08/13)
     }
 
     private void helpMethodArgumentVariable(StringBuilder sea, int land) {
