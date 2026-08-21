@@ -222,23 +222,23 @@ public class Step02IfForTest extends PlainTestCase {
     public void test_iffor_refactor_foreach_to_forEach() {
         List<String> stageList = prepareStageList();
         String[] sea = new String[1];
-        // TODO hattori flagという変数名だと読み手にとっての情報量が少ないので... by jflute (2026/08/09)
+        // done hattori flagという変数名だと読み手にとっての情報量が少ないので... by jflute (2026/08/09)
         // (flagであることはboolean型を見ればわかるし)
         // 具体的に何を入れているのか？true/falseは何を示すのか？を変数名にしてみましょう。
-        // TODO hattori 一方で、フラグは、できれば false から true にしたいところですね。 by jflute (2026/08/09)
+        // done hattori 一方で、フラグは、できれば false から true にしたいところですね。 by jflute (2026/08/09)
         // フラグってflag, 旗なので、下げている状態(false)から何かが起きたら上がる(true)というニュアンスなので...
         // 必ずしも意味的に難しいときもありますが、可能ならデフォルトがfalseで何かがおきたらtrueになる方が直感的かなと。
         // (もしくは、"その後の処理をしないように" って否定ニュアンスを表現するために、false にしたんですかね？)
         // TODO hattori 昔、アンケートの回答者を表示しない機能を作るときに、
         //  「アンケートの回答者を表示しない」フラグを作ろうとしたけど「匿名回答機能が有効」のフラグに変えたことを思い出しました by fujisawa (2026/08/13)
-        final boolean[] flag = { true };
+        final boolean[] isStopped = { false };
         stageList.forEach(stage -> {
-            if (!flag[0]) {
+            if (isStopped[0]) {
                 return;
             }
             sea[0] = stage;
             if (sea[0].contains("ga")) {
-                flag[0] = false;
+                isStopped[0] = true;
             }
         });
         log(sea[0]); // should be same as before-fix
@@ -281,7 +281,7 @@ public class Step02IfForTest extends PlainTestCase {
      */
     public void test_iffor_yourExercise() {
         // write your code here
-        List<String> stageList = ExerciseList();
+        List<String> stageList = exerciseList();
         StringBuilder sea = new StringBuilder();
         int length = 4;
         for (String stage : stageList) {
@@ -302,9 +302,9 @@ public class Step02IfForTest extends PlainTestCase {
         // 自分も追ってみました。これはなかなか難易度高くて良い（＾＾。
     }
 
-    // TODO hattori 一応、Javaだとメソッドの先頭は小文字が慣習となります。 by jflute (2026/08/09)
+    // done hattori 一応、Javaだとメソッドの先頭は小文字が慣習となります。 by jflute (2026/08/09)
     // TODO hattori 命名規則、慣れるまでは大変ですよね。「プログラム 命名規則 キャメル」とかで調べると、色々な命名規則見られておもしろい by fujisawa (2026/08/13)
-    private List<String> ExerciseList() {
+    private List<String> exerciseList() {
         List<String> stageList = new ArrayList<>();
         stageList.add("apple");
         stageList.add("fluit");
