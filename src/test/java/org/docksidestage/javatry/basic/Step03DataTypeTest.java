@@ -47,14 +47,16 @@ public class Step03DataTypeTest extends PlainTestCase {
 
         piari = piari.plusDays(1);
         land = piari.getYear();
-        bonvo = bonvo.plusMonths(1);
-        land = bonvo.getMonthValue();
-        land--;
+        bonvo = bonvo.plusMonths(1);//bonvo=10
+        land = bonvo.getMonthValue();//land=10
+        land--;//land=9
         if (dstore) {
-            BigDecimal addedDecimal = amba.add(new BigDecimal(land));
+            BigDecimal addedDecimal = amba.add(new BigDecimal(land));//9.4+416=425.6
+            //9.4+9=18.4
             sea = String.valueOf(addedDecimal);
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 425.6
+        //正解は18.4
     }
 
     // ===================================================================================
@@ -71,18 +73,18 @@ public class Step03DataTypeTest extends PlainTestCase {
         char miraco = 'a';
         boolean dohotel = miraco == 'a';
         if (dohotel && dstore >= piari) {
-            bonvo = sea;
-            land = (short) bonvo;
+            bonvo = sea;//127
+            land = (short) bonvo;//127
             bonvo = piari;
-            sea = (byte) land;
+            sea = (byte) land;//127
             if (amba == 2.3D) {
-                sea = (byte) amba;
+                sea = (byte) amba;//2.3d
             }
         }
         if ((int) dstore > piari) {
             sea = 0;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 2
     }
 
     // ===================================================================================
@@ -92,7 +94,7 @@ public class Step03DataTypeTest extends PlainTestCase {
     public void test_datatype_object() {
         St3ImmutableStage stage = new St3ImmutableStage("hangar");
         String sea = stage.getStageName();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => hanger
     }
 
     private static class St3ImmutableStage {
