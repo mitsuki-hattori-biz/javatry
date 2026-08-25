@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 
 import org.docksidestage.unit.PlainTestCase;
 
+// TODO hattori クラスJavaDocの@authorをお願いします (javatryポリシーとして) by jflute (2026/08/25)
 /**
  * The test of data type. <br>
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
@@ -40,11 +41,22 @@ public class Step03DataTypeTest extends PlainTestCase {
     public void test_datatype_basicType() {
         String sea = "mystic";
         Integer land = 416;
+        // #1on1: 日付というとyyyy/MM/dd, 日時というとyyyy/MM/dd HH:mm:ss... (2026/08/25)
+        // 若干日付という言葉が曖昧で、抽象的な日付という言葉と、年月日を指す日付とあるけど...
+        // おおむねこんな使い分けをされていることが多い。
+        //
+        // 英語名として、Dateは日付、DateTimeは日時。
+        // ただ、そこも曖昧なこともある。Dateって書いて日時だったり... (広義/狭義の違い!?)
+        //
+        // なんなら、昔のJavaはDate型というクラスがあって、時分秒も持っていた。
+        //
         LocalDate piari = LocalDate.of(2001, 9, 4);
         LocalDateTime bonvo = LocalDateTime.of(2001, 9, 4, 12, 34, 56);
         Boolean dstore = true;
         BigDecimal amba = new BigDecimal("9.4");
 
+        // LocalDateもLocalDateTimeもimmutable
+        // (昔のDateクラスはmutable)
         piari = piari.plusDays(1);
         land = piari.getYear();
         bonvo = bonvo.plusMonths(1);//bonvo=10
@@ -57,6 +69,7 @@ public class Step03DataTypeTest extends PlainTestCase {
         }
         log(sea); // your answer? => 425.6
         //正解は18.4
+        // #1on1: landの見逃し、単なる凡ミス (2026/08/25)
     }
 
     // ===================================================================================
@@ -85,6 +98,13 @@ public class Step03DataTypeTest extends PlainTestCase {
             sea = 0;
         }
         log(sea); // your answer? => 2
+        // #1on1: まあトレーニングだからってのはありますが... (2026/08/25)
+        // 読むのにレアな文法知識を必要とする書き方はできるだけ避けたい。
+        // そういう匙加減をしながら書いたりする。
+        // あんまり配慮しすぎると選択肢が減るので書く方がつらくなる。
+        // ただ今回のレベルで言うとみんな共通だと思うので避けたい。
+
+        // #1on1: 自分の書いたプログラムを自分がずっとメンテするわけではない話 (2026/08/25)
     }
 
     // ===================================================================================
@@ -96,6 +116,16 @@ public class Step03DataTypeTest extends PlainTestCase {
         String sea = stage.getStageName();
         log(sea); // your answer? => hanger
     }
+
+    // #1on1: immutableなクラスを自分で作るってなったらこんな感じ (2026/08/25)
+    // o newするときに値を受け取る
+    // o 受け取った値をfinalにしておく (厳密には必須ではないが可読性のために)
+    // o getterしか用意しない (setterは作らない)
+    //
+    // o 変化させるときは、新しいインスタンスを戻す
+
+    // #1on1: $ hangarしかないだろという感想 (2026/08/25)
+    // エクササイズとして迷いポイントがない。immutableのクラスにあまりフォーカスが当たらない。
 
     private static class St3ImmutableStage {
 
