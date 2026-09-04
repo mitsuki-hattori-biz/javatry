@@ -21,13 +21,13 @@ import java.time.LocalDateTime;
 
 import org.docksidestage.unit.PlainTestCase;
 
-// TODO hattori クラスJavaDocの@authorをお願いします (javatryポリシーとして) by jflute (2026/08/25)
+// done hattori クラスJavaDocの@authorをお願いします (javatryポリシーとして) by jflute (2026/08/25)
 /**
  * The test of data type. <br>
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りにエクササイズを実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう)
  * @author jflute
- * @author your_name_here
+ * @author hattori
  */
 public class Step03DataTypeTest extends PlainTestCase {
 

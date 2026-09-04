@@ -132,7 +132,7 @@ public class Step02IfForTest extends PlainTestCase {
         //
         // 仮説思考的なコードリーディング。
         // 
-        // TODO hattori [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/08/25)
+        // done hattori [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/08/25)
         // https://jflute.hatenadiary.jp/entry/20150111/kasetsu
         //
         // #1on1: $先輩がぱっあああああっと見て判断できているのはなんでだ!? (2026/08/25)
@@ -252,7 +252,7 @@ public class Step02IfForTest extends PlainTestCase {
         // フラグってflag, 旗なので、下げている状態(false)から何かが起きたら上がる(true)というニュアンスなので...
         // 必ずしも意味的に難しいときもありますが、可能ならデフォルトがfalseで何かがおきたらtrueになる方が直感的かなと。
         // (もしくは、"その後の処理をしないように" って否定ニュアンスを表現するために、false にしたんですかね？)
-        // TODO hattori 昔、アンケートの回答者を表示しない機能を作るときに、
+        // done hattori 昔、アンケートの回答者を表示しない機能を作るときに、
         //  「アンケートの回答者を表示しない」フラグを作ろうとしたけど「匿名回答機能が有効」のフラグに変えたことを思い出しました by fujisawa (2026/08/13)
         final boolean[] isStopped = { false };
         stageList.forEach(stage -> {
@@ -326,7 +326,7 @@ public class Step02IfForTest extends PlainTestCase {
     }
 
     // done hattori 一応、Javaだとメソッドの先頭は小文字が慣習となります。 by jflute (2026/08/09)
-    // TODO hattori 命名規則、慣れるまでは大変ですよね。「プログラム 命名規則 キャメル」とかで調べると、色々な命名規則見られておもしろい by fujisawa (2026/08/13)
+    // done hattori 命名規則、慣れるまでは大変ですよね。「プログラム 命名規則 キャメル」とかで調べると、色々な命名規則見られておもしろい by fujisawa (2026/08/13)
     // #1on1: せっかくなので1on1の場でググってみた (2026/08/25)
     // // 命名規則についてまとめてみた（キャメルケース，パスカルケース，スネークケース，ケバブケース, etc...）
     // https://qiita.com/shota0616/items/4ac7a8696b3f6ccbe2bc
