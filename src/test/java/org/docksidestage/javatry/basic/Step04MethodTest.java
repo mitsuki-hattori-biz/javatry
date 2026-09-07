@@ -40,6 +40,21 @@ public class Step04MethodTest extends PlainTestCase {
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_method_call_many() {
+        // #1on1: FunctionalInterfaceのお話 (2026/09/07)
+        // function: 関数、引数と戻り値があるもの
+        // consumer: 消費者、引数をもらって消費するだけ (戻り値ない)
+        // supplier: 供給者、供給するだけ (引数ない)
+        // (runnable: 引数/戻り値なし) // ちょっと亜種
+        //
+        // (関数型プログラミングのコンセプトをちょっととり入れて)
+        //
+        // (ざっくり: 引数戻り値をベースにしたやり方)
+        //
+        // 関数という言葉:
+        // o 関数型プログラミングの関数 (哲学的!?)
+        // o なんかの言語の文法としての関数 (狭義!?)
+        //
+        // またいつかstep8のStream APIのところで関数型プログラミングの補足。
         String sea = functionSomething("mystic");
         consumeSomething(supplySomething());
         runnableSomething();
@@ -155,13 +170,31 @@ public class Step04MethodTest extends PlainTestCase {
     private boolean availableLogging = true;
 
     public void test_method_making() {
-//         use after making these methods
+        //         use after making these methods
         String replaced = replaceCwithB(replaceAwithB("ABC"));
         String sea = quote(replaced, "'");
         if (isAvailableLogging()) {
             showSea(sea);
         }
     }
+
+    // #1on1: いいね。privateメソッドの定義順序が直感的で見やすい (2026/09/07)
+    // 呼び出し順序と一致してて、呼び出しフローと照らし合わせやすい。
+    // コードの輪郭を記憶しやすい。
+
+    // #1on1: $カテゴリでまとめたいときは？ (2026/09/07)
+    // そのカテゴリにどれだけ存在感があるかどうか？ (感覚値)
+    // なければ気にせず呼び出し順序にするし、存在感あるのでまとめた方がわかりやすいと思ったら...
+    // もうカテゴリコメント(タグコメント)入れて独立させちゃう。by jflute
+    // そのハイブリッドでバランスを取っている。
+
+    // #1on1: 既存コードへの追加、一番下に定義されやすい話 (2026/09/07)
+    // 既存クラスのコード体裁コンセプトを見てあげて、追加をして欲しい。
+    // 他人のもの感全開で既存クラスを修正するっていうのは避けて欲しい。
+    // (責任感の話)
+
+    // TODO hattori [読み物課題] 既存コードの甘い匂い (悪意なきチグハグコードの誕生) by jflute (2026/09/07)
+    // https://jflute.hatenadiary.jp/entry/20160203/existingcode
 
     // write methods here
     private String replaceAwithB(String str) {
@@ -172,6 +205,7 @@ public class Step04MethodTest extends PlainTestCase {
         return str.replace("C", "B");
     }
 
+    // #1on1: いいね、引数名がとても良い。意味がある引数名。 (2026/09/07)
     private String quote(String text, String quotation) {
         return quotation + text + quotation;
     }
