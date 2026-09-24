@@ -43,7 +43,7 @@ public class Step05ClassTest extends PlainTestCase {
         TicketBooth booth = new TicketBooth();
         booth.buyOneDayPassport(7400);
         int sea = booth.getQuantity();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 9
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -51,20 +51,24 @@ public class Step05ClassTest extends PlainTestCase {
         TicketBooth booth = new TicketBooth();
         booth.buyOneDayPassport(10000);
         Integer sea = booth.getSalesProceeds();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 10000
+        //fix :7400
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_class_howToUse_nosales() {
         TicketBooth booth = new TicketBooth();
         Integer sea = booth.getSalesProceeds();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => null
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_class_howToUse_wrongQuantity() {
         Integer sea = doTest_class_ticket_wrongQuantity();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 9
+        //ログ、"Failed to buy one-day passport: money7399"
+        //ログ、"Short money: 7399"
+        //fix :10
     }
 
     private Integer doTest_class_ticket_wrongQuantity() {
@@ -90,6 +94,7 @@ public class Step05ClassTest extends PlainTestCase {
         Integer sea = doTest_class_ticket_wrongQuantity();
         log(sea); // should be max quantity, visual check here
     }
+    //解決するだけならbuyOneDayPassportにelseを増やすだけでしたが、エラーが先に来てるのは若干気持ち悪いかなと思ったので順番を入れ替えました。
 
     /**
      * Fix the problem of sales proceeds increased by handed money. (Don't forget to fix also previous exercise answers) <br>
@@ -108,13 +113,14 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_letsFix_makeMethod_twoday() {
         // uncomment after making the method
-        //TicketBooth booth = new TicketBooth();
-        //int money = 14000;
-        //int change = booth.buyTwoDayPassport(money);
-        //Integer sea = booth.getSalesProceeds() + change;
-        //log(sea); // should be same as money
+        TicketBooth booth = new TicketBooth();
+        int money = 14000;
+        int change = booth.buyTwoDayPassport(money);
+        Integer sea = booth.getSalesProceeds() + change;
+        log(sea); // should be same as money
 
         // and show two-day passport quantity here
+        log(booth.getQuantity());
     }
 
     /**
@@ -126,6 +132,8 @@ public class Step05ClassTest extends PlainTestCase {
         booth.buyOneDayPassport(10000);
         log(booth.getQuantity(), booth.getSalesProceeds()); // should be same as before-fix
     }
+    //本当は一日チケットは何も返さず、二日チケットだけ、お釣りを返してるのが気持ち悪いんですけど、
+    //それを統一しようとすると既存の仕様と異なってしまうので、今回はそのままにしておきます。
 
     // ===================================================================================
     //                                                                           Challenge

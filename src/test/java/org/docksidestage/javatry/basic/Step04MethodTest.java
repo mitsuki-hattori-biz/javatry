@@ -193,7 +193,7 @@ public class Step04MethodTest extends PlainTestCase {
     // 他人のもの感全開で既存クラスを修正するっていうのは避けて欲しい。
     // (責任感の話)
 
-    // TODO hattori [読み物課題] 既存コードの甘い匂い (悪意なきチグハグコードの誕生) by jflute (2026/09/07)
+    // done hattori [読み物課題] 既存コードの甘い匂い (悪意なきチグハグコードの誕生) by jflute (2026/09/07)
     // https://jflute.hatenadiary.jp/entry/20160203/existingcode
 
     // write methods here
