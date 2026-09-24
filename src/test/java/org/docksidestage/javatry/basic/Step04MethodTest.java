@@ -195,6 +195,7 @@ public class Step04MethodTest extends PlainTestCase {
 
     // done hattori [読み物課題] 既存コードの甘い匂い (悪意なきチグハグコードの誕生) by jflute (2026/09/07)
     // https://jflute.hatenadiary.jp/entry/20160203/existingcode
+    // #1on1: ちょっとだけ一緒に読み合わせ。プロ意識。 (2026/09/24)
 
     // write methods here
     private String replaceAwithB(String str) {
