@@ -193,6 +193,7 @@ public class Step05ClassTest extends PlainTestCase {
         log(twoDayPassport.getDisplayPrice() + change); // should be same as money
     }
 
+    // TODO jflute 次回1on1ここから (2026/10/13)
     /**
      * Now you can use only one in spite of two-day passport, so fix Ticket to be able to handle plural days. <br>
      * (TwoDayPassportなのに一回しか利用できません。複数日数に対応できるようにTicketを修正しましょう)

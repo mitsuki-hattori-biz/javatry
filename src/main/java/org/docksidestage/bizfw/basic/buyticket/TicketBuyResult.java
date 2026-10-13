@@ -30,6 +30,10 @@ public class TicketBuyResult {
     //                                                                         Constructor
     //                                                                         ===========
     public TicketBuyResult(Ticket ticket, int change) {
+        // #1on1: 逆にConstructorの悩み実装の他のパターンの紹介 (2026/10/13)
+        // 1. Resultなのか、ResultCreatorなのか？
+        // 2. Constructorでやるのか、どうか？
+        //    Constructorは極力スッキリさせる傾向にある。
         this.ticket = ticket;
         this.change = change;
     }
@@ -45,7 +49,18 @@ public class TicketBuyResult {
         return change;
     }
 
+    // #1on1: Resultクラスの実装だけ見ると、ticketがnullかもしれないので... (2026/10/13)
+    // nullPointerで落とすのではなく、0として振る舞うというのも一つの考え方。
+    // 一方で、状況的にはおかしいので、下手に動くよりもnullPointerでもいいから落ちる方が良いという考え方。
+    // (jfluteの感想: 会社のプログラミングだと、後者の "下手に動くよりも" が重視される傾向にある)
     public int getDisplayPrice() {
+        // #1on1: もし後者の考え方をするのであれば、こんな感じ (2026/10/13)
+        //if (ticket == null) {
+        //    throw new IllegalStateException("Not found the ticket");
+        //}
+        // #1on1: AIのSuggestionのクラスの完結性のお話 (2026/10/13)
+        // TicketBoothと足し合わせてチェックを考えるか？
+        // TicketBuyResultだけでの完結性でチェックを考えるか？
         return ticket != null ? ticket.getDisplayPrice() : 0;
     }
 }

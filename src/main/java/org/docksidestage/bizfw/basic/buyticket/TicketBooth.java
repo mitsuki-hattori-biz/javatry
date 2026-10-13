@@ -28,6 +28,10 @@ public class TicketBooth {
     private static final int MAX_QUANTITY = 10;
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
     private static final int TWO_DAY_PRICE = 13200; // when 2019/06/15
+    // #1on1: $twoDayのwhenのコメントは、一応気にした記憶がある (2026/10/13)
+    // じゃあOK。
+    // jfluteだと、"when 2019/06/15" まんまではなく、"↑と同じ" みたいに表現を変えたり。
+    // コピペミスじゃないですよってのを示すために。
 
     // ===================================================================================
     //                                                                           Attribute
@@ -55,6 +59,8 @@ public class TicketBooth {
     // done hattori buyTicket()とsalesCalculation()の間に追加処理が入ったときに... by jflute (2026/09/24)
     // 呼び出し側の修正を一箇所で済ませられるようにしたい。
     // (あと例えば、buyTicket()とsalesCalculation()の順番を入れ替えるってときに一箇所修正で済むように)
+    // TODO hattori @returnの追加をお願いします by jflute (2026/10/13)
+    // e.g. @return 購入したチケット (NotNull)
     /**
      * Buy one-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
@@ -65,7 +71,7 @@ public class TicketBooth {
         if (quantity <= 0) {
             throw new TicketSoldOutException("Sold out");
         }
-        if(handedMoney < ONE_DAY_PRICE) {
+        if (handedMoney < ONE_DAY_PRICE) {
             throw new TicketShortMoneyException("Short money: " + handedMoney);
         }
         Ticket ticket = new Ticket(ONE_DAY_PRICE);
@@ -78,7 +84,7 @@ public class TicketBooth {
         if (quantity <= 0) {
             throw new TicketSoldOutException("Sold out");
         }
-        if(handedMoney < TWO_DAY_PRICE) {
+        if (handedMoney < TWO_DAY_PRICE) {
             throw new TicketShortMoneyException("Short money: " + handedMoney);
         }
         int change = doBuyTicket(handedMoney, TWO_DAY_PRICE);
@@ -99,12 +105,33 @@ public class TicketBooth {
     private Integer doBuyTicket(Integer handedMoney, int price) {
         // #1on1: test_class_letsFix_ticketQuantityReduction() の方でじっくり議論メモあり (2026/09/24)
         --quantity;
+        // TODO hattori handedMoney(手渡し金額)という概念の変数が、お釣りに変わっている by jflute (2026/10/13)
+        // 短い変数なのでまあ良いじゃん感もあるんですが、やはり1行単位で見ると、誤解を産むこともある。
+        // (実際、もっとこのメソッドの中が複雑で、業務の流れをパッと把握することができないレベルの場合も想定して)
+        // #1on1: calculateChange()を作る場合のメリットのお話 (2026/10/13)
+        // 小さくてもれっきとしたビジネスロジックということで、お釣りの計算を見つけやすくなる。
+        // (存在感の表現: step4の最後のprivateメソッド群みたいな感じで)
         handedMoney -= price;
         return handedMoney;
     }
+    // #1on1: $changeの計算自体、doBuyTicket()なのか？ (2026/10/13)
+    // $元々のdoBuyTicket()のニュアンスが、売上も入れないくらいチケットに特化した処理なので...
+    // doBuyTicket()が広い意味か？狭い意味か？
+    // 広い意味だったらそもそも売上も入ってもいいかも。
+    // 狭い意味だったら確かにお釣りは独立した方がいいかも。
+    // ただ、狭い意味の場合、もう --quantity しかないので、
+    // メソッド名の抽象度が紛らわしいので、reduceQuantity() とか抽象度を周りに合わせる方が良いかも。
+    // もしくは、Ticketの発行(new)までdoBuyTicket()の中までやって、チケット処理感を出す。
+    //  → その場合、doBuyTicket()よりも、issueTicket() とかでも良いかも。
+    //
+    // メソッドの粒度、処理の配置(どのメソッドに置くのか？) が可読性につながる。
+    // TODO hattori ぜひ思うがままにリファクタリングを by jflute (2026/10/13)
 
     // done hattori 一応、オーソドックスには、メソッド名は動詞始まりの方が良いかなと by jflute (2026/09/24)
     // (あえてこういう名前にして何かしらの特徴を得るみたいなテクニックはあるけど、普通はしない)
+    // TODO hattori 引数名、変数は先頭小文字で (上は直ってる) by jflute (2026/10/13)
+    // 格言: 「一つ直したら、他にも似たところがないか探す習慣を」
+    // (練習で手を抜いたら、本番でも手を抜いてしまう話)
     private void calculateSales(int Price) {
         if (salesProceeds != null) { // second or more purchase
             salesProceeds = salesProceeds + Price;
