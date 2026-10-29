@@ -59,11 +59,12 @@ public class TicketBooth {
     // done hattori buyTicket()とsalesCalculation()の間に追加処理が入ったときに... by jflute (2026/09/24)
     // 呼び出し側の修正を一箇所で済ませられるようにしたい。
     // (あと例えば、buyTicket()とsalesCalculation()の順番を入れ替えるってときに一箇所修正で済むように)
-    // TODO hattori @returnの追加をお願いします by jflute (2026/10/13)
+    // done hattori @returnの追加をお願いします by jflute (2026/10/13)
     // e.g. @return 購入したチケット (NotNull)
     /**
      * Buy one-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
+     * @return The purchased one-day passport. (NotNull)
      * @throws TicketSoldOutException When ticket in booth is sold out.
      * @throws TicketShortMoneyException When the specified money is short for purchase.
      */
@@ -75,7 +76,8 @@ public class TicketBooth {
             throw new TicketShortMoneyException("Short money: " + handedMoney);
         }
         Ticket ticket = new Ticket(ONE_DAY_PRICE);
-        doBuyTicket(handedMoney, ONE_DAY_PRICE);
+        reduceTicketQuantity();
+//        calculateChange(handedMoney, ONE_DAY_PRICE); //one-day passportのときはお釣りの計算は不要なのでコメントアウト
         calculateSales(ONE_DAY_PRICE);
         return ticket;
     }
@@ -87,7 +89,8 @@ public class TicketBooth {
         if (handedMoney < TWO_DAY_PRICE) {
             throw new TicketShortMoneyException("Short money: " + handedMoney);
         }
-        int change = doBuyTicket(handedMoney, TWO_DAY_PRICE);
+        reduceTicketQuantity();
+        int change = calculateChange(handedMoney, TWO_DAY_PRICE);
         // #1on1: $handedMoneyが所持金というニュアンスだったから減らした (2026/09/24)
         // $いま、handedMoneyがもらったお金というニュアンスで捉えたらお釣りは別の方がいい
         // done hattori "パークゲストから手渡しされたお金(金額)" と書かれているので、お釣り変数も用意しましょう by jflute (2026/09/24)
@@ -96,24 +99,28 @@ public class TicketBooth {
         return ticketBuyResult;
     }
 
+    private void reduceTicketQuantity() {
+        --quantity;
+    }
+
     // done hattori Javaの慣習として、変数名は先頭小文字 Price → price by jflute (2026/09/24)
     // done hattori publicのbuyとprivateのbuyがかぶるのを避ける手法がある by jflute (2026/09/24)
     // コントローラー的なbuyと実処理のbuy, が補完の一覧で混ざって若干わかりにくいのを避けるために、
     // 実処理は例えば doBuyTicket() にするとか。
     // もちろん違う単語を使って区別することもあるが、業務的にしっくり来なければ、
     // doのようなprefixで区別するってことよくある。会話上も区別しやすい。
-    private Integer doBuyTicket(Integer handedMoney, int price) {
+    private int calculateChange(Integer handedMoney, int price) {
         // #1on1: test_class_letsFix_ticketQuantityReduction() の方でじっくり議論メモあり (2026/09/24)
-        --quantity;
-        // TODO hattori handedMoney(手渡し金額)という概念の変数が、お釣りに変わっている by jflute (2026/10/13)
+        // done hattori handedMoney(手渡し金額)という概念の変数が、お釣りに変わっている by jflute (2026/10/13)
         // 短い変数なのでまあ良いじゃん感もあるんですが、やはり1行単位で見ると、誤解を産むこともある。
         // (実際、もっとこのメソッドの中が複雑で、業務の流れをパッと把握することができないレベルの場合も想定して)
         // #1on1: calculateChange()を作る場合のメリットのお話 (2026/10/13)
         // 小さくてもれっきとしたビジネスロジックということで、お釣りの計算を見つけやすくなる。
         // (存在感の表現: step4の最後のprivateメソッド群みたいな感じで)
-        handedMoney -= price;
-        return handedMoney;
+        int change = handedMoney - price;
+        return change;
     }
+
     // #1on1: $changeの計算自体、doBuyTicket()なのか？ (2026/10/13)
     // $元々のdoBuyTicket()のニュアンスが、売上も入れないくらいチケットに特化した処理なので...
     // doBuyTicket()が広い意味か？狭い意味か？
@@ -125,18 +132,18 @@ public class TicketBooth {
     //  → その場合、doBuyTicket()よりも、issueTicket() とかでも良いかも。
     //
     // メソッドの粒度、処理の配置(どのメソッドに置くのか？) が可読性につながる。
-    // TODO hattori ぜひ思うがままにリファクタリングを by jflute (2026/10/13)
+    // done hattori ぜひ思うがままにリファクタリングを by jflute (2026/10/13)
 
     // done hattori 一応、オーソドックスには、メソッド名は動詞始まりの方が良いかなと by jflute (2026/09/24)
     // (あえてこういう名前にして何かしらの特徴を得るみたいなテクニックはあるけど、普通はしない)
-    // TODO hattori 引数名、変数は先頭小文字で (上は直ってる) by jflute (2026/10/13)
+    // done hattori 引数名、変数は先頭小文字で (上は直ってる) by jflute (2026/10/13)
     // 格言: 「一つ直したら、他にも似たところがないか探す習慣を」
     // (練習で手を抜いたら、本番でも手を抜いてしまう話)
-    private void calculateSales(int Price) {
+    private void calculateSales(int price) {
         if (salesProceeds != null) { // second or more purchase
-            salesProceeds = salesProceeds + Price;
+            salesProceeds = salesProceeds + price;
         } else { // first purchase
-            salesProceeds = Price;
+            salesProceeds = price;
         }
     }
 
