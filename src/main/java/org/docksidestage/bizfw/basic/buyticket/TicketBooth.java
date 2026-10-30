@@ -75,7 +75,7 @@ public class TicketBooth {
         if (handedMoney < ONE_DAY_PRICE) {
             throw new TicketShortMoneyException("Short money: " + handedMoney);
         }
-        Ticket ticket = new Ticket(ONE_DAY_PRICE);
+        Ticket ticket = new Ticket(ONE_DAY_PRICE,1);
         reduceTicketQuantity();
 //        calculateChange(handedMoney, ONE_DAY_PRICE); //one-day passportのときはお釣りの計算は不要なのでコメントアウト
         calculateSales(ONE_DAY_PRICE);
@@ -95,7 +95,7 @@ public class TicketBooth {
         // $いま、handedMoneyがもらったお金というニュアンスで捉えたらお釣りは別の方がいい
         // done hattori "パークゲストから手渡しされたお金(金額)" と書かれているので、お釣り変数も用意しましょう by jflute (2026/09/24)
         calculateSales(TWO_DAY_PRICE);
-        TicketBuyResult ticketBuyResult = new TicketBuyResult(new Ticket(TWO_DAY_PRICE), change);
+        TicketBuyResult ticketBuyResult = new TicketBuyResult(new Ticket(TWO_DAY_PRICE,2), change);
         return ticketBuyResult;
     }
 
