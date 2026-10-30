@@ -75,9 +75,15 @@ public class TicketBooth {
         if (handedMoney < ONE_DAY_PRICE) {
             throw new TicketShortMoneyException("Short money: " + handedMoney);
         }
-        Ticket ticket = new Ticket(ONE_DAY_PRICE,1);
+        Ticket ticket = new Ticket(ONE_DAY_PRICE, 1);
         reduceTicketQuantity();
-//        calculateChange(handedMoney, ONE_DAY_PRICE); //one-day passportのときはお釣りの計算は不要なのでコメントアウト
+        // #1on1: いいね、コメントアウトにコメントがあるのとてもGood (2026/10/30)
+        // $コメントアウトだからといってコメント書いた意識じゃないかもだけど、
+        // $残すからには何か書いておかないと思った。(or 行ごと消す)
+        // $コメントアウトだけが残ってる状態が気持ち悪いと思った。
+        // Lasta Di の例を出しみた。
+        // https://github.com/lastaflute/lasta-di/commit/a653ea137c6d080d918056987e3f0340ff4476c5#diff-c810ed4c9ab6eb031e234fb2fae6e36aa4f485abaf6ec118e15c41e45bae8d77R67
+        //        calculateChange(handedMoney, ONE_DAY_PRICE); //one-day passportのときはお釣りの計算は不要なのでコメントアウト
         calculateSales(ONE_DAY_PRICE);
         return ticket;
     }
@@ -89,16 +95,23 @@ public class TicketBooth {
         if (handedMoney < TWO_DAY_PRICE) {
             throw new TicketShortMoneyException("Short money: " + handedMoney);
         }
+        // TODO hattori quantityとsalesがくっついていた方が業務的に直感的かなと by jflute (2026/10/30)
+        // changeはresult作る処理に近しいのかなと。どのみちchangeの変数をスコープを短くしたい。
+        // (順番変わっても動くにしても、流れとして自然な順番を数秒考える)
         reduceTicketQuantity();
         int change = calculateChange(handedMoney, TWO_DAY_PRICE);
         // #1on1: $handedMoneyが所持金というニュアンスだったから減らした (2026/09/24)
         // $いま、handedMoneyがもらったお金というニュアンスで捉えたらお釣りは別の方がいい
         // done hattori "パークゲストから手渡しされたお金(金額)" と書かれているので、お釣り変数も用意しましょう by jflute (2026/09/24)
         calculateSales(TWO_DAY_PRICE);
-        TicketBuyResult ticketBuyResult = new TicketBuyResult(new Ticket(TWO_DAY_PRICE,2), change);
+        TicketBuyResult ticketBuyResult = new TicketBuyResult(new Ticket(TWO_DAY_PRICE, 2), change);
         return ticketBuyResult;
     }
 
+    // #1on1: れっきとした明示的な業務としてメソッド化しているのGood (2026/10/30)
+    // 行数が少なくても業務表現ということでメソッド化するのは良い。
+    // 実際に、ここがDBに変わったりRemoteAPIに変わったりする可能性があるので、
+    // いま1行なのはたまたま1行なだけ、という感覚。
     private void reduceTicketQuantity() {
         --quantity;
     }
