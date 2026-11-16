@@ -21,10 +21,24 @@ package org.docksidestage.bizfw.basic.buyticket;
 public class Ticket {
 
     // ===================================================================================
+    //                                                                           TicketType
+    //                                                                           =========
+
+    public enum TicketType {
+        ONE_DAY,
+        TWO_DAY
+    }// written on ticket, park guest can watch this
+    private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
+    private static final int TWO_DAY_PRICE = 13200; // when 2019/06/15
+
+
+    // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
-    private final int displayPrice; // written on ticket, park guest can watch this
+
+    private final TicketType ticketType;
     private int remainingDays; // remaining days of admission; unavailable when zero or less
+    private final int displayPrice; // written on ticket, park guest can watch this
 
     // ===================================================================================
     //                                                                         Constructor
@@ -33,9 +47,17 @@ public class Ticket {
     // 他のアンチパターンの紹介。単なるcountとかdaysだと、どっち？ってのがわからなくなる。
     // あとdaysという言葉が良い。日数という業務表現をしっかりしている。
     // 他のパターン、day だとカレンダーの日をイメージしちゃう。
-    public Ticket(int displayPrice, int remainingDays) {
-        this.displayPrice = displayPrice;
-        this.remainingDays = remainingDays;
+    public Ticket(TicketType ticketType) {
+        this.ticketType = ticketType;
+        if (ticketType == TicketType.ONE_DAY) {
+            this.remainingDays = 1;
+            this.displayPrice = ONE_DAY_PRICE;
+        } else if (ticketType == TicketType.TWO_DAY) {
+            this.remainingDays = 2;
+            this.displayPrice = TWO_DAY_PRICE;
+        } else {
+            throw new IllegalArgumentException("Invalid ticket type: " + ticketType);
+        }
     }
 
     // ===================================================================================
@@ -53,6 +75,10 @@ public class Ticket {
     //                                                                            ========
     public int getDisplayPrice() {
         return displayPrice;
+    }
+
+    public TicketType getTicketType() {
+        return ticketType;
     }
 
     // #1on1: $互換性のために、あとシンプルな判定のメソッドは便利なので合っても良いだろう (2026/10/30)
