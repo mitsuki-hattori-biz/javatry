@@ -15,6 +15,8 @@
  */
 package org.docksidestage.bizfw.basic.buyticket;
 
+import java.time.LocalTime;
+
 /**
  * @author jflute
  */
@@ -27,11 +29,13 @@ public class Ticket {
     public enum TicketType {
         ONE_DAY,
         TWO_DAY,
-        FOUR_DAY // 4日券の追加 (2026/10/30)
+        FOUR_DAY, // 4日券の追加 (2026/10/30)
+        NightOnlyTwoDay // 2日券の夜間版の追加 (2026/10/30)
     }// written on ticket, park guest can watch this
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
     private static final int TWO_DAY_PRICE = 13200; // when 2019/06/15
     private static final int FOUR_DAY_PRICE = 22400; // when 2019/06/15
+    private static final int NIGHT_ONLY_TWO_DAY_PRICE = 7400; // when 2019/06/15
 
 
     // ===================================================================================
@@ -61,6 +65,9 @@ public class Ticket {
         } else if (ticketType == TicketType.FOUR_DAY) {
             this.remainingDays = 4;
             this.displayPrice = FOUR_DAY_PRICE;
+        } else if (ticketType == TicketType.NightOnlyTwoDay) {
+            this.remainingDays = 2;
+            this.displayPrice = NIGHT_ONLY_TWO_DAY_PRICE;
         } else {
             throw new IllegalArgumentException("Invalid ticket type: " + ticketType);
         }
@@ -69,9 +76,12 @@ public class Ticket {
     // ===================================================================================
     //                                                                             In Park
     //                                                                             =======
-    public void doInPark() {
+    public void doInPark(LocalTime currentTime) {
+        if (ticketType == TicketType.NightOnlyTwoDay&&currentTime.isBefore(LocalTime.of(20, 00))) {
+            throw new IllegalStateException("Cannot enter park before 20:00 with NightOnlyTwoDay ticket: currentTime=" + currentTime);
+        }
         if (remainingDays <= 0) {
-            throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
+            throw new IllegalStateException("Already in park by this ticket: TicketType=" + ticketType);
         }
         remainingDays--;
     }

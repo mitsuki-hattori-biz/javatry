@@ -15,6 +15,8 @@
  */
 package org.docksidestage.javatry.basic;
 
+import java.time.LocalTime;
+
 import org.docksidestage.bizfw.basic.buyticket.Ticket;
 import org.docksidestage.bizfw.basic.buyticket.Ticket.TicketType;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth;
@@ -124,6 +126,7 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         // [ticket booth info]
         //
         TicketBooth booth = new TicketBooth();
+        LocalTime currentTime = LocalTime.of(20,30);
 
         // *booth has these properties:
         //int oneDayPrice = 7400;
@@ -159,7 +162,7 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
         //
         // [do in park now!!!]
         //
-        ticket.doInPark();
+        ticket.doInPark(currentTime);
 
         // *doInPark() has this process:
         //if (alreadyIn) {

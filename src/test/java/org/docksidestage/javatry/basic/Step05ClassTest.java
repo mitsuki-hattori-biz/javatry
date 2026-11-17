@@ -15,6 +15,8 @@
  */
 package org.docksidestage.javatry.basic;
 
+import java.time.LocalTime;
+
 import org.docksidestage.bizfw.basic.buyticket.Ticket;
 import org.docksidestage.bizfw.basic.buyticket.Ticket.TicketType;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth;
@@ -172,11 +174,13 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_return_ticket() {
         // uncomment out after modifying the method
+        //hattori currentTimeをあとから追加
+        LocalTime currentTime = LocalTime.of(20,30);
         TicketBooth booth = new TicketBooth();
         Ticket oneDayPassport = booth.buyOneDayPassport(10000);
         log(oneDayPassport.getDisplayPrice()); // should be same as one-day price
         log(oneDayPassport.isAlreadyIn()); // should be false
-        oneDayPassport.doInPark();
+        oneDayPassport.doInPark(currentTime);
         log(oneDayPassport.isAlreadyIn()); // should be true
     }
 
@@ -257,6 +261,20 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_wonder_night() {
         // your confirmation code here
+        TicketBooth booth = new TicketBooth();
+        // 夜入場できるパターン
+        int money = 10000;
+        TicketBuyResult buyResult = booth.buyPassport(money, TicketType.NightOnlyTwoDay);
+        int change = buyResult.getChange();
+        log(change);
+        LocalTime currentTime = LocalTime.of(20,30);
+        buyResult.getTicket().doInPark(currentTime);
+
+//         夜入場できないパターン
+        currentTime = LocalTime.of(20,00);
+        buyResult.getTicket().doInPark(currentTime);
+
+        log(booth.getQuantity());
     }
 
     // ===================================================================================
