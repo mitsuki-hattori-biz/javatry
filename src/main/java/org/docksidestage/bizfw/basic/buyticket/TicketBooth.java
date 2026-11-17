@@ -110,6 +110,22 @@ public class TicketBooth {
         return ticketBuyResult;
     }
 
+    //hattori buyTwoDayPassportの汎用関数、Step05ClassTest.javaの既存の処理も全部置き換えるとjavatryがやりづらくなるかと思ったので、上は上で残しています　
+    public TicketBuyResult buyPassport(Integer handedMoney, TicketType ticketType) {
+        Ticket ticket = new Ticket(ticketType);
+        if (quantity <= 0) {
+            throw new TicketSoldOutException("Sold out");
+        }
+        if (handedMoney < ticket.getDisplayPrice()) {
+            throw new TicketShortMoneyException("Short money: " + handedMoney);
+        }
+        reduceTicketQuantity();
+        calculateSales(ticket.getDisplayPrice());
+        int change = calculateChange(handedMoney, ticket.getDisplayPrice());
+        TicketBuyResult ticketBuyResult = new TicketBuyResult(ticket, change);
+        return ticketBuyResult;
+    }
+
     // #1on1: れっきとした明示的な業務としてメソッド化しているのGood (2026/10/30)
     // 行数が少なくても業務表現ということでメソッド化するのは良い。
     // 実際に、ここがDBに変わったりRemoteAPIに変わったりする可能性があるので、
