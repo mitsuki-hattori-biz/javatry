@@ -207,7 +207,7 @@ public class Step05ClassTest extends PlainTestCase {
         // your confirmation code here
     }
 
-    // TODO jflute 次回1on1ここから (2026/10/30)
+    // done jflute 次回1on1ここから (2026/10/30)
     /**
      * Accurately determine whether type of bought ticket is two-day passport or not by if-statement. (fix Ticket classes if needed) <br>
      * (買ったチケットの種別がTwoDayPassportなのかどうかをif文で正確に判定してみましょう。(必要ならTicketクラスたちを修正))
@@ -224,6 +224,8 @@ public class Step05ClassTest extends PlainTestCase {
 
     // uncomment when you implement this exercise
     private void showTicketIfNeeds(Ticket ticket) {
+        // #1on1: enumのときの == の判定、ただインスタンスのアドレスを比較しているだけ (2026/11/19)
+        // enumだから特別な判定がされているわけではない。
         if (ticket.getTicketType() == TicketType.TWO_DAY) { // write determination for two-day passport
             log("two-day passport");
         } else {
@@ -270,13 +272,18 @@ public class Step05ClassTest extends PlainTestCase {
         LocalTime currentTime = LocalTime.of(20,30);
         buyResult.getTicket().doInPark(currentTime);
 
+        // TODO hattori 20時ぴったりなら入場できるはず by jflute (2026/11/19)
 //         夜入場できないパターン
         currentTime = LocalTime.of(20,00);
         buyResult.getTicket().doInPark(currentTime);
+        
+        // TODO hattori 入れないパターンもテストしておきましょう by jflute (2026/11/19)
+        // (例外が発生したらOKというような形で)
 
         log(booth.getQuantity());
     }
 
+    // TODO jflute 次回1on1、とぅどぅ確認の後ここから (2026/11/19)
     // ===================================================================================
     //                                                                         Bonus Stage
     //                                                                         ===========

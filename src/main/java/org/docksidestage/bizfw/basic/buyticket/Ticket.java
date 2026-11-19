@@ -17,6 +17,7 @@ package org.docksidestage.bizfw.basic.buyticket;
 
 import java.time.LocalTime;
 
+// TODO hattori author追加お願いします (全体見直してみて) by jflute (2026/11/19)
 /**
  * @author jflute
  */
@@ -25,7 +26,28 @@ public class Ticket {
     // ===================================================================================
     //                                                                           TicketType
     //                                                                           =========
-
+    // #1on1: enumクラスで一意に識別できるのGood (2026/11/19)
+    // enumの仕組み。enun自体は(少なくともJavaだと)一応クラス。
+    // new TicketType()はできない。でも...
+    // TicketType a = TicketType.ONE_DAY; と書くことができる。
+    // なので、インスタンスがちゃんと存在する。
+    // ONE_DAY と TWO_DAY では別インスタンス。
+    // つまり、「インスタンス限定型クラス」と言える。
+    // いまTicketTypeのインスタンスは４つある。ずっと４つ。
+    // 1,2,...のIDの代わりに、インスタンスのアドレスが使われていると言っても過言ではない。
+    // ただ、人間向けにインスタンスに名前をつけている。ONE_DAY, TWO_DAY, ...
+    // 普通のクラスで同じことをやろうとすると以下のようになる。
+    /*
+    public static class BetaTicketType {
+        public static final BetaTicketType ONE_DAY = new BetaTicketType();
+        public static final BetaTicketType TWO_DAY = new BetaTicketType();
+        // ...
+        
+        private BetaTicketType() {
+        }
+    }
+    */
+    // つまり、これがenum(クラス)の仕組み。
     public enum TicketType {
         ONE_DAY,
         TWO_DAY,
@@ -41,7 +63,7 @@ public class Ticket {
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
-
+    // TODO hattori ここは変数も少ないので、immutableかmutableかで順序制御 by jflute (2026/11/19)
     private final TicketType ticketType;
     private int remainingDays; // remaining days of admission; unavailable when zero or less
     private final int displayPrice; // written on ticket, park guest can watch this
@@ -54,6 +76,9 @@ public class Ticket {
     // あとdaysという言葉が良い。日数という業務表現をしっかりしている。
     // 他のパターン、day だとカレンダーの日をイメージしちゃう。
     // hattori ここのif文を汎用化したい気持ちもあるけど、汎用化しすぎると実装する気のないDayTicketとかが使えるようになってしまうので、あえて汎用化しない。
+    // TODO hattori 修行++: チケット種別が増えた時、データ追加だけで済ませたい。 by jflute (2026/11/19)
+    // 今だと、Constructorの中のプログラムの修正が必要。(プログラムの中にデータがあるイメージ)
+    // ただ、buyするときに買えないチケットを指定できないやり方は維持したい。(enum指定は維持したい)
     public Ticket(TicketType ticketType) {
         this.ticketType = ticketType;
         if (ticketType == TicketType.ONE_DAY) {
@@ -76,6 +101,10 @@ public class Ticket {
     // ===================================================================================
     //                                                                             In Park
     //                                                                             =======
+    // TODO hattori 修行++: お客さんが提供した現在時刻でチェックするのではなく、Ticketシステム側で導出した現在時刻でチェックしましょう by jflute (2026/11/19)
+    // つまり、doInPark() のメソッドの引数はナシに。あくまで内部で現在時刻は取ってチェックする。
+    // TODO hattori 修行++: 別のNightOnlyのチケット種別ができたとき、夜開始の時刻が違っても対応できるように by jflute (2026/11/19)
+    // ただし、単純にここでif文を追加して、この種別だったら19時、この...20時、っていうやり方にはならないように。
     public void doInPark(LocalTime currentTime) {
         if (ticketType == TicketType.NightOnlyTwoDay&&currentTime.isBefore(LocalTime.of(20, 00))) {
             throw new IllegalStateException("Cannot enter park before 20:00 with NightOnlyTwoDay ticket: currentTime=" + currentTime);
@@ -89,6 +118,7 @@ public class Ticket {
     // ===================================================================================
     //                                                                            Accessor
     //                                                                            ========
+    // TODO hattori getterメソッドの定義、インスタンス変数の定義順序に合わせた魔性 by jflute (2026/11/19)
     public int getDisplayPrice() {
         return displayPrice;
     }

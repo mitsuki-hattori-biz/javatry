@@ -97,7 +97,7 @@ public class TicketBooth {
         if (handedMoney < ticket.getDisplayPrice()) {
             throw new TicketShortMoneyException("Short money: " + handedMoney);
         }
-        // TODO　done hattori quantityとsalesがくっついていた方が業務的に直感的かなと by jflute (2026/10/30)
+        // done hattori quantityとsalesがくっついていた方が業務的に直感的かなと by jflute (2026/10/30)
         // changeはresult作る処理に近しいのかなと。どのみちchangeの変数をスコープを短くしたい。
         // (順番変わっても動くにしても、流れとして自然な順番を数秒考える)
         reduceTicketQuantity();
@@ -111,6 +111,15 @@ public class TicketBooth {
     }
 
     //hattori buyTwoDayPassportの汎用関数、Step05ClassTest.javaの既存の処理も全部置き換えるとjavatryがやりづらくなるかと思ったので、上は上で残しています　
+    // #1on1: buyPassport() でまるごと再利用できている (2026/11/19)
+    // 一方で、メソッドによるチケット種別方式、引数enumによるチケット種別方式、どっちがいい？
+    // $そもそもTicketTypeを指定することベースで考えた。金額の指定の間違いとか。
+    // メソッドの選択でチケットを選ぶのか？引数のenumでチケットを選ぶのか？ここは差がない。
+    // 仮にBoothで売らないチケット種別があったとしたら、メソッドの選択だと限定できる。
+    // ある種、チケット種別(enum)の種類をメソッドで隠蔽しているとも言える。
+    // メソッドによるチケット種別方式は、引数enumによるチケット種別方式をラップしている感ある。
+    // ラップの仕方はメソッドだけとは限らず、enum BoothPurchaseableTicketType とかも。
+    // TODO hattori publicのbuyPassport()をメインにするとして、せめて、既存メソッドの実装再利用しましょう by jflute (2026/11/19)
     public TicketBuyResult buyPassport(Integer handedMoney, TicketType ticketType) {
         Ticket ticket = new Ticket(ticketType);
         if (quantity <= 0) {
@@ -126,6 +135,7 @@ public class TicketBooth {
         return ticketBuyResult;
     }
 
+    // TODO hattori Quantityのメソッドと、Salesのメソッドを位置を近づけましょう by jflute (2026/11/19)
     // #1on1: れっきとした明示的な業務としてメソッド化しているのGood (2026/10/30)
     // 行数が少なくても業務表現ということでメソッド化するのは良い。
     // 実際に、ここがDBに変わったりRemoteAPIに変わったりする可能性があるので、
